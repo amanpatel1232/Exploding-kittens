@@ -2,6 +2,7 @@ import express from "express";
 import { config } from "dotenv";
 import userRoutes from "./routes/game.routes.js";
 import cors from "cors"; // Import CORS
+import path from "path";
 import { fileURLToPath } from 'url';
 
 // Get the __filename and __dirname in ES modules
