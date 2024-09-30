@@ -1,7 +1,6 @@
 import express from "express";
 import { config } from "dotenv";
 import userRoutes from "./routes/game.routes.js";
-import path from "path";
 import cors from "cors"; // Import CORS
 import { fileURLToPath } from 'url';
 
@@ -13,7 +12,7 @@ config();
 
 const app = express();
 
-// CORS configuration with multiple origins
+// CORS configuration
 const allowedOrigins = [
   'http://localhost:5173', // Your local development URL
   'https://your-app-name.netlify.app', // Your deployed Netlify URL
@@ -40,10 +39,4 @@ app.listen(PORT, () => {
 // Use API routes
 app.use("/api/game", userRoutes);
 
-// Serve frontend static files in production (if applicable)
-app.use(express.static(path.join(__dirname, "/frontend/dist")));
-
-// Handle React routing, return all requests to the index.html
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "frontend", "dist", "index.html"));
-});
+// No need to serve static files or handle React routing since the frontend is deployed separately
