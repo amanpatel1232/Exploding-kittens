@@ -13,10 +13,21 @@ config();
 
 const app = express();
 
-// Use CORS middleware
+// CORS configuration with multiple origins
+const allowedOrigins = [
+  'http://localhost:5173', // Your local development URL
+  'https://your-app-name.netlify.app', // Your deployed Netlify URL
+];
+
 app.use(cors({
-  origin: 'http://localhost:5173', // Replace with your frontend URL
-  credentials: true, // Enable credentials if needed
+  origin: (origin, callback) => {
+    if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+      callback(null, origin); // Allow the request
+    } else {
+      callback(new Error('Not allowed by CORS')); // Block the request
+    }
+  },
+  credentials: true, // Enable credentials if your frontend sends cookies or HTTP auth info
 }));
 
 app.use(express.json());
@@ -29,7 +40,7 @@ app.listen(PORT, () => {
 // Use API routes
 app.use("/api/game", userRoutes);
 
-// Serve frontend static files in production
+// Serve frontend static files in production (if applicable)
 app.use(express.static(path.join(__dirname, "/frontend/dist")));
 
 // Handle React routing, return all requests to the index.html
