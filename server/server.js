@@ -8,9 +8,11 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 let __dirname = path.dirname(__filename);
 
-// Move up one directory level (from /server to the parent folder)
-__dirname = path.join(__dirname, '..');
-console.log("__dirname", __dirname);
+// Move up to the project root directory
+__dirname = path.join(__dirname, '..'); // Adjust according to your structure
+
+console.log("__dirname", __dirname); // This should now point to project-root
+
 config();
 
 const app = express();
@@ -25,12 +27,9 @@ app.listen(PORT, () => {
 app.use("/api/game", userRoutes);
 
 // Serve frontend static files in production
-if (process.env.NODE_ENV === "production") {
-  // Serve static files from the frontend build folder
-  app.use(express.static(path.join(__dirname, "frontend", "dist")));
+app.use(express.static(path.join(__dirname, "frontend", "dist"))); // Adjusted path
 
-  // Handle React routing, return all requests to the index.html
-  app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "frontend", "dist", "index.html"));
-  });
-}
+// Handle React routing, return all requests to the index.html
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "frontend", "dist", "index.html")); // Adjusted path
+});
