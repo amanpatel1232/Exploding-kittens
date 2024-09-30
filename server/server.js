@@ -10,7 +10,7 @@ let __dirname = path.dirname(__filename);
 
 // Move up one directory level (from /server to the parent folder)
 __dirname = path.join(__dirname, '..');
-console.log(__dirname)
+console.log("__dirname", __dirname);
 config();
 
 const app = express();
@@ -25,10 +25,12 @@ app.listen(PORT, () => {
 app.use("/api/game", userRoutes);
 
 // Serve frontend static files in production
+if (process.env.NODE_ENV === "production") {
   // Serve static files from the frontend build folder
-  app.use(express.static(path.join(__dirname, "/frontend/dist")));
+  app.use(express.static(path.join(__dirname, "frontend", "dist")));
 
   // Handle React routing, return all requests to the index.html
   app.get("*", (req, res) => {
     res.sendFile(path.join(__dirname, "frontend", "dist", "index.html"));
   });
+}
