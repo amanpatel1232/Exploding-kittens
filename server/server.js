@@ -19,16 +19,15 @@ const allowedOrigins = [
   'https://your-app-name.netlify.app', // Your deployed Netlify URL
 ];
 
-app.use(cors({
-  origin: (origin, callback) => {
-    if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
-      callback(null, origin); // Allow the request
-    } else {
-      callback(new Error('Not allowed by CORS')); // Block the request
-    }
-  },
-  credentials: true, // Enable credentials if your frontend sends cookies or HTTP auth info
-}));
+app.use(
+  cors({
+    cors: {
+      origin: "*", // Update with your frontend URL or specific origin
+    },
+    credentials: true, // Enable credentials if your frontend sends cookies or HTTP auth info
+  })
+);
+
 
 app.use(express.json());
 
